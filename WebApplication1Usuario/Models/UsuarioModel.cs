@@ -12,5 +12,6 @@
         public string Descricao { get; set; }
         public string Foto { get; set; }
         public DateTime DataNascimento { get; set; }
+        public string Token { get; set; }
     }
 }

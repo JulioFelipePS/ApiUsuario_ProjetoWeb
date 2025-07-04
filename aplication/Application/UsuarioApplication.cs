@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using aplication.Adapter;
 using aplication.DTO;
 using domain.repositorio;
-
+using domain.entidades;
+using usuarioRepositorio;
 namespace aplication.Application
 {
     public class UsuarioApplication
@@ -49,6 +50,17 @@ namespace aplication.Application
             }
 
             return usuariosDTO;
+        }
+
+        public bool Autenticar(string user, string password)
+        {
+             
+            User usu = _usuarioRepository.Procurar(user); 
+            if (!usu.PasswordIsValid(password))
+            {
+                throw new Exception("Usuário ou senha inválidos");
+            }
+            return true;
         }
     }
 }

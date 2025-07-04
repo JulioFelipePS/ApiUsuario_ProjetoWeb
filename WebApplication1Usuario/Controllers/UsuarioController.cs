@@ -4,6 +4,8 @@ using WebApplication1Usuario.Models;
 using aplication.DTO;
 using aplication.Application;
 using WebApplication1Usuario.Adapter;
+using Microsoft.AspNetCore.Authorization;
+using WebApplication1Usuario.Services;
 
 namespace WebApplication1Usuario.Controllers
 {
@@ -67,7 +69,35 @@ namespace WebApplication1Usuario.Controllers
             app.Excluir(id);
         }
 
+        [HttpPost("autenticar")]
+        [AllowAnonymous]
+        public IActionResult Autenticar([FromBody] AutenticarDto usuario)
+        {
+            UsuarioApplication app = new UsuarioApplication(_usuarioRepo);
 
+            try
+            {
+                if (app.Autenticar(usuario.Username, usuario.Senha))
+                {
+                    var user = app.Procurar(usuario.Username);
 
+                    var userDto = app.Procurar(usuario.Username);
+                    var userModel = UsuarioMapping.ToModel(userDto);
+
+                    var token = TokenServices.GenerateToken(userModel);
+                    return Ok(new { usuario.Username, Token = token });
+                }
+                else
+                {
+                    return BadRequest("Usuario ou senha inválidos");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
+
 }
+
