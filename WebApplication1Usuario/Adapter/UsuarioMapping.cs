@@ -9,42 +9,62 @@ namespace WebApplication1Usuario.Adapter
         {
             if (user == null)
                 return null;
-            else
-            {
-                UsuarioModel userModel = new UsuarioModel();
-                userModel.NomeCompleto = user.NomeCompleto;
-                userModel.Email = user.Email;
-                userModel.Senha = user.Senha;
-                userModel.Username = user.Username;
-                userModel.Telefone = user.Telefone;
-                userModel.Genero = user.Genero;
-                userModel.Descricao = user.Descricao;
-                userModel.Foto = user.Foto;
-                userModel.DataNascimento = user.DataNascimento;
-                return userModel;
-            }
 
+            return new UsuarioModel
+            {
+                Id = user.Id, // se tiver Id no DTO
+                NomeCompleto = user.NomeCompleto,
+                Email = user.Email,
+                Senha = user.Senha,
+                Username = user.Username,
+                Telefone = user.Telefone,
+                Genero = user.Genero,
+                Descricao = user.Descricao,
+                Foto = user.Foto,
+                DataNascimento = user.DataNascimento
+            };
         }
 
         public static UsuarioDTO ToDto(UsuarioModel user)
         {
             if (user == null)
                 return null;
-            else
-            {
-                UsuarioDTO userDto = new UsuarioDTO();
-                userDto.NomeCompleto = user.NomeCompleto;
-                userDto.Email = user.Email;
-                userDto.Senha = user.Senha;
-                userDto.Username = user.Username;
-                userDto.Telefone = user.Telefone;
-                userDto.Genero = user.Genero;
-                userDto.Descricao = user.Descricao;
-                userDto.Foto = user.Foto;
-                userDto.DataNascimento = user.DataNascimento;
 
-                return userDto;
-            }
+            return new UsuarioDTO
+            {
+                Id = user.Id,
+                NomeCompleto = user.NomeCompleto,
+                Email = user.Email,
+                Senha = user.Senha,
+                Username = user.Username,
+                Telefone = user.Telefone,
+                Genero = user.Genero,
+                Descricao = user.Descricao,
+                Foto = user.Foto,
+                DataNascimento = user.DataNascimento
+            };
+        }
+
+        // ✅ Novo método: mapping do InserirDto para UsuarioModel
+        public static UsuarioModel ToModel(InserirDto dto)
+        {
+            if (dto == null)
+                return null;
+
+            return new UsuarioModel
+            {
+                Id = Guid.NewGuid(), // gera um novo ID para inserção
+                NomeCompleto = dto.NomeCompleto,
+                Email = dto.Email,
+                Senha = dto.Senha,
+                Username = dto.Username,
+                Telefone = dto.Telefone,
+                Genero = dto.Genero,
+                Descricao = dto.Descricao,
+                Foto = dto.Foto,
+                DataNascimento = dto.DataNascimento,
+               
+            };
         }
     }
 }

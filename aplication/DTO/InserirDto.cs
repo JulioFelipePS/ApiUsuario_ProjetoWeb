@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace domain.entidades
+namespace aplication.DTO
 {
-    public class User
+    public class InserirDto
     {
-        public Guid Id { get; set; }
         public string NomeCompleto { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
@@ -18,15 +17,5 @@ namespace domain.entidades
         public string Descricao { get; set; }
         public string Foto { get; set; }
         public DateTime DataNascimento { get; set; }
-
-
-        
-
-        public bool PasswordIsValid(string senha)
-        {
-            return this.Senha == senha;
-        }
-
     }
 }
-

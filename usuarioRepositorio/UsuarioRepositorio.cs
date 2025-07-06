@@ -49,6 +49,7 @@ namespace usuarioRepositorio
                         cmd.Parameters.AddWithValue("genero", cliente.Genero);
                         cmd.Parameters.AddWithValue("descricao", cliente.Descricao);
                         cmd.Parameters.AddWithValue("foto", cliente.Foto);
+                        cmd.Parameters.AddWithValue("id", cliente.Id);
                         cmd.ExecuteNonQuery();
 
                         transacao.Commit();
@@ -99,15 +100,19 @@ namespace usuarioRepositorio
                 {
                     try
                     {
+                        if (cliente.Id == Guid.Empty)
+                        {
+                            cliente.Id = Guid.NewGuid();
+                        }
                         using (var cmd = new NpgsqlCommand())
                         {
                             cmd.Connection = conexao;
                             cmd.Transaction = transacao;
                             cmd.CommandText = @"
                                                 INSERT INTO public.users
-                                                (nomecompleto, email, senha, datanascimento, username, telefone, genero, descricao, foto)
+                                                (id,nomecompleto, email, senha, datanascimento, username, telefone, genero, descricao, foto)
                                                 VALUES
-                                                (@nomecompleto, @email, @senha, @datanascimento, @username, @telefone, @genero, @descricao, @foto)";
+                                                (@id,@nomecompleto, @email, @senha, @datanascimento, @username, @telefone, @genero, @descricao, @foto)";
 
                             cmd.Parameters.AddWithValue("nomecompleto", cliente.NomeCompleto);
                             cmd.Parameters.AddWithValue("email", cliente.Email);
@@ -118,6 +123,7 @@ namespace usuarioRepositorio
                             cmd.Parameters.AddWithValue("genero", cliente.Genero);
                             cmd.Parameters.AddWithValue("descricao", cliente.Descricao);
                             cmd.Parameters.AddWithValue("foto", cliente.Foto);
+                            cmd.Parameters.AddWithValue("id", cliente.Id);
 
                             cmd.ExecuteNonQuery();
                             transacao.Commit();
@@ -189,13 +195,10 @@ namespace usuarioRepositorio
                     {
                         var cliente = new User()
                         {
-                            Id = Guid.Parse(leitor["id"].ToString()),
+                            
                             NomeCompleto = leitor["nomecompleto"].ToString(),
-                            Email = leitor["email"].ToString(),
-                            Senha = leitor["senha"].ToString(),
                             DataNascimento = Convert.ToDateTime(leitor["datanascimento"]),
                             Username = leitor["username"].ToString(),
-                            Telefone = leitor["telefone"].ToString(),
                             Genero = leitor["genero"].ToString(),
                             Descricao = leitor["descricao"].ToString(),
                             Foto = leitor["foto"].ToString(),
